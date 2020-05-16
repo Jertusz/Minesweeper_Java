@@ -99,6 +99,7 @@ public class GUI {
                                         img = ImageIO.read(getClass().getResource("resources/flag.png"));
                                         img = img.getScaledInstance(width, height, Image.SCALE_DEFAULT);
                                         button.setIcon(new ImageIcon(img));
+                                        button.setBackground(Color.lightGray);
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                         button.setText("*");
@@ -112,8 +113,7 @@ public class GUI {
                         }
                         System.out.println(board);
                         changeButtons();
-                        boolean won = board.winCondition();
-                        if(won) {
+                        if(board.winCondition()) {
                             int option = JOptionPane.showConfirmDialog(frame, "Wygrana! \n Czy chcesz zagrać ponownie?", "", JOptionPane.YES_NO_OPTION);
                             if(option == JOptionPane.YES_OPTION) {
                                 frame.dispose();
@@ -134,9 +134,37 @@ public class GUI {
                 frame.add(button);
             }
         }
-        frame.add(status);
+
         frame.setSize(600,400);
-        frame.setLayout(new GridLayout(board.getBoard().size()+1, board.getBoard().size()-1));
+        JButton reset = new JButton();
+        reset.setText("Reset");
+        reset.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                frame.dispose();
+                newGame();
+            }
+        });
+        frame.setLayout(new GridLayout(board.getBoard().size()+2, board.getBoard().size()-1));
+        for(int i = 0; i < board.getBoard().size(); i++) {
+            frame.add(new JPanel());
+        }
+        frame.add(status);
+        JButton close = new JButton();
+        close.setText("Close");
+        close.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                frame.dispose();
+            }
+        });
+        for(int i = 0; i < board.getBoard().size()-3; i++) {
+            frame.add(new JPanel());
+        }
+        frame.add(reset);
+        frame.add(close);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
