@@ -2,6 +2,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Class is used to create a board object containing fields,
+ * works both with console and with GUI version
+ *
+ * @author JS 
+ */
 public class Board {
     List<List<Field>> board;
     List<Integer[]> bombPositions = new ArrayList<>();
@@ -12,6 +18,10 @@ public class Board {
         generateMines(bombs);
     }
 
+    /**
+     * Method used to created board fields with default values
+     * @param size Size of the board
+     */
     private void setDefaultField(int size) {
         for(int i = 0; i < size; i++) {
             List<Field> line = new ArrayList<>();
@@ -26,6 +36,11 @@ public class Board {
         return board;
     }
 
+    /**
+     * Method used to get field coordinates on the board
+     * @param searched Field object that we want to find on the board
+     * @return int[] List [position on x axis, positions of y axis]
+     */
     public int[] getFieldCoordinates (Field searched) {
         for(List<Field> line: board){
             for(Field field: line) {
@@ -37,6 +52,12 @@ public class Board {
         return null;
     }
 
+    /**
+     * Method used to mark bombs to forbid user from clicking on them accidentaly
+     * @param x Position of field on x axis
+     * @param y Position of field on y axis
+     * @return Boolean true only if marking worked
+     */
     public boolean markBomb(int x, int y) {
 
         try {
@@ -44,10 +65,12 @@ public class Board {
                 board.get(x).get(y).setMarkedBomb(true);
                 return true;
             } else if (board.get(x).get(y).isDiscovered()) {
-                System.out.println("That field is already discovered");
+//                Console version only
+//                System.out.println("That field is already discovered");
                 return false;
             } else if (board.get(x).get(y).isMarkedBomb()) {
-                System.out.println("That field is already marked");
+//                Console version only
+//                System.out.println("That field is already marked");
                 return false;
             }
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -57,19 +80,27 @@ public class Board {
         return false;
     }
 
-    public boolean unmarkBomb(int x, int y) {
+    /**
+     * Method used to unmark bombs previously marked, to allow for discovery
+     * ArrayIndexOutOfBounds possible only when playing console version
+     * @param x Position of field on x axis
+     * @param y Position of field on y axis
+     */
+    public void unmarkBomb(int x, int y) {
         try {
             if(board.get(x).get(y).isMarkedBomb()) {
                 board.get(x).get(y).setMarkedBomb(false);
-                return true;
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Field out of range");
-            return false;
+//            Console version only
+//            System.out.println("Field out of range");
         }
-        return false;
     }
 
+    /**
+     * Method used to generate bombs on the board in random positions
+     * @param quantity Bomb quantity
+     */
     private void generateMines(int quantity) {
         Random generator = new Random();
         int x, y;
@@ -96,6 +127,12 @@ public class Board {
         }
     }
 
+    /**
+     * Method used to recursively check for undiscovered fields, until fields near bomb (1 - 8 values) are found
+     * @param x Position of the field on x axis
+     * @param y Position of the field on y axis
+     * @return Boolean true only if the field contains bomb
+     */
     public boolean unveilField(int x, int y) {
         Field field;
         try {
@@ -109,7 +146,8 @@ public class Board {
         }
 
         if (field.getValue() == 9) {
-            System.out.println("Bomba");
+//            Only for console version
+//            System.out.println("Bomba");
             return true;
         } else {
             field.setDiscovered(true);
@@ -131,7 +169,10 @@ public class Board {
         return false;
     }
 
-    // drawBoard is for test purposes only
+    /**
+     * Debug purpose only, allows to dynamically see what happens on the board after user clicks.
+     * Can be deleted without breaking the program.
+     */
     public void drawBoard() {
         StringBuilder boardImage = new StringBuilder();
         for(List<Field> line: board) {
@@ -151,6 +192,10 @@ public class Board {
         System.out.println(boardImage);
     }
 
+    /**
+     * This method check if user discovered all fields and marked all bombs
+     * @return Boolean true if all fields discovered, false if not
+     */
     public boolean winCondition() {
         int discovered = 0;
         int bombs = 0;
@@ -163,10 +208,13 @@ public class Board {
                 }
             }
         }
-        System.out.println("Discovered: " + discovered);
-        System.out.println("Discovered bombs: " + bombs);
-        System.out.println("Total fields: " + (int) Math.pow(board.size(), 2));
-        System.out.println("Total bombs: " + bombPositions.size());
+
+//        Enable this to see additional output in console
+//        System.out.println("Discovered: " + discovered);
+//        System.out.println("Discovered bombs: " + bombs);
+//        System.out.println("Total fields: " + (int) Math.pow(board.size(), 2));
+//        System.out.println("Total bombs: " + bombPositions.size());
+
         if (discovered + bombs == (int) Math.pow(board.size(), 2) && bombs == bombPositions.size()) {
             return true;
         } else {
