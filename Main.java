@@ -1,7 +1,3 @@
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
-
 public class Main {
     public static void main(String[] args) {
         // Main game loop only for testing purposes
@@ -30,9 +26,7 @@ public class Main {
 //            }
 //            won = gierka.winCondition();
 //        }
-        Board gra = new Board(10,1);
-        gra.drawBoard();
-        GUI okno = new GUI(gra);
-        okno.showGui();
+        GUI.newGame();
+
     }
 }
