@@ -21,9 +21,40 @@ public class GUI {
                 if(field.isDiscovered()) {
                     int[] fieldCoordinates = board.getFieldCoordinates(field);
                     buttons.get(fieldCoordinates[0]).get(fieldCoordinates[1]).setText(String.valueOf(field.getValue()));
+                    setFontColor(buttons.get(fieldCoordinates[0]).get(fieldCoordinates[1]), field);
                 }
             }
         }
+    }
+
+    public void setFontColor(JButton button, Field field) {
+        switch (field.getValue()) {
+            case 1:
+                button.setForeground(Color.BLUE);
+                break;
+            case 2:
+                button.setForeground(Color.GREEN);
+                break;
+            case 3:
+                button.setForeground(Color.RED);
+                break;
+            case 4:
+                button.setForeground(Color.MAGENTA);
+                break;
+            case 5:
+                button.setForeground(Color.decode("#8B4513"));
+                break;
+            case 6:
+                button.setForeground(Color.CYAN);
+                break;
+            case 7:
+                button.setForeground(Color.BLACK);
+                break;
+            case 8:
+                button.setForeground(Color.GRAY);
+                break;
+        }
+        button.setBackground(Color.WHITE);
     }
 
     public void showGui() {
