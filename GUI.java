@@ -7,6 +7,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Main class of the minesweeper program
+ * Responsible for handling all GUI stuff
+ *
+ * @author JS
+ */
 public class GUI {
 
     static GraphicsConfiguration gc;
@@ -17,6 +23,9 @@ public class GUI {
         this.board = board;
     }
 
+    /**
+     * Method used to refresh visual properties for all fields on the boards
+     */
     public void changeButtons() {
         for (List<Field> line : board.getBoard()) {
             for (Field field : line) {
@@ -29,6 +38,11 @@ public class GUI {
         }
     }
 
+    /**
+     * Method used to setting correct color according to field value
+     * @param button Button visually representing the field object
+     * @param field Field object we are requesting the values from
+     */
     public void setFontColor(JButton button, Field field) {
         switch (field.getValue()) {
             case 1:
@@ -59,11 +73,17 @@ public class GUI {
         button.setBackground(Color.WHITE);
     }
 
+    /**
+     * Method used to add mouseClick listener to button
+     * @param arg0 Mouse key pressed
+     * @param field Field object bound with button clicked to get value from
+     * @param button Button clicked
+     * @param frame Frame containing the button
+     */
     public void mousePressed(MouseEvent arg0, Field field, JButton button, JFrame frame) {
         int[] fieldCoordinates = board.getFieldCoordinates(field);
-        System.out.println(Arrays.toString(fieldCoordinates));
-        System.out.println(button.getMouseListeners()[0]);
         boolean result;
+
         if (arg0.getButton() == MouseEvent.BUTTON1) {
             result = board.unveilField(fieldCoordinates[0], fieldCoordinates[1]);
             if (!result && !field.isMarkedBomb()) {
@@ -111,11 +131,13 @@ public class GUI {
         }
     }
 
-    public void showGui() {
-        JFrame frame = new JFrame(gc);
-        frame.setTitle("Minesweeper JS");
-        JLabel status = new JLabel();
-        status.setText(String.format("Bombs: %d", board.bombPositions.size()));
+    /**
+     * Method used to create grid of buttons with fields / mouseListeners assigned
+     * @param frame Frame we want to reference in mouseListener
+     * @return Grid of buttons
+     */
+    public List<List<JButton>> createButtons (JFrame frame) {
+        List<List<JButton>> buttonGrid = new ArrayList<>();
         for (List<Field> line : board.getBoard()) {
             List<JButton> temporary = new ArrayList<>();
             for (Field field : line) {
@@ -128,9 +150,21 @@ public class GUI {
                 });
                 temporary.add(button);
             }
-            buttons.add(temporary);
-            System.out.println();
+            buttonGrid.add(temporary);
         }
+        return buttonGrid;
+    }
+
+    /**
+     * Method used for creating the program window.
+     * Responsible for handling all events and calling methods for changes / updates
+     */
+    public void showGui() {
+        JFrame frame = new JFrame(gc);
+        frame.setTitle("Minesweeper JS");
+        JLabel status = new JLabel();
+        status.setText(String.format("Bombs: %d", board.bombPositions.size()));
+        buttons = createButtons(frame);
         for (List<JButton> line : buttons) {
             for (JButton button : line) {
                 frame.add(button);
@@ -171,6 +205,9 @@ public class GUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    /**
+     * Method containing main game loop
+     */
     public static void newGame() {
         int bombs = Integer.parseInt(JOptionPane.showInputDialog("Podaj ilość bomb"));
         int size = Integer.parseInt(JOptionPane.showInputDialog("Podaj rozmiar planszy"));
