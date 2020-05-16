@@ -79,7 +79,7 @@ public class GUI {
                             result = board.unveilField(fieldCoordinates[0], fieldCoordinates[1]);
                             if (!result && !field.isMarkedBomb()) {
                                 button.setText(String.valueOf(field.getValue()));
-                            } else if (field.getValue() == 9) {
+                            } else if (field.getValue() == 9 && !field.isMarkedBomb()) {
                                 int option = JOptionPane.showConfirmDialog(frame, "Przegrana! \n Czy chcesz zagrać ponownie?", "", JOptionPane.YES_NO_OPTION);
                                 if(option == JOptionPane.YES_OPTION) {
                                     frame.dispose();
