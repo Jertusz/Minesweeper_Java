@@ -3,10 +3,10 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Class is used to create a board object containing fields,
+ * Class is used to create a board object,
  * works both with console and with GUI version
  *
- * @author JS 
+ * @author JS
  */
 public class Board {
     List<List<Field>> board;

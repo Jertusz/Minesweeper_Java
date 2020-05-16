@@ -1,3 +1,8 @@
+/**
+ * Class used for creating field object,
+ *
+ * @author JS
+ */
 public class Field {
     int value;
     boolean discovered;
