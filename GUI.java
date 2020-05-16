@@ -73,7 +73,7 @@ public class GUI {
                         boolean result;
                         if (arg0.getButton() == MouseEvent.BUTTON1){
                             result = board.unveilField(fieldCoordinates[0], fieldCoordinates[1]);
-                            if (!result) {
+                            if (!result && !field.isMarkedBomb()) {
                                 button.setText(String.valueOf(field.getValue()));
                             }
                         } else if (arg0.getButton() == MouseEvent.BUTTON3) {
