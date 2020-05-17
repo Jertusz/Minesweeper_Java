@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -45,6 +44,8 @@ public class GUI {
      */
     public void setFontColor(JButton button, Field field) {
         switch (field.getValue()) {
+            case 0:
+                button.setText("");
             case 1:
                 button.setForeground(Color.BLUE);
                 break;
@@ -70,7 +71,7 @@ public class GUI {
                 button.setForeground(Color.GRAY);
                 break;
         }
-        button.setBackground(Color.WHITE);
+        button.setBackground(Color.lightGray);
     }
 
     /**
@@ -116,6 +117,7 @@ public class GUI {
             } else {
                 board.unmarkBomb(fieldCoordinates[0], fieldCoordinates[1]);
                 button.setText("");
+                button.setBackground(null);
                 button.setIcon(null);
             }
         }
