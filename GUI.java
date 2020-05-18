@@ -165,6 +165,7 @@ public class GUI {
     public void showGui() {
         JFrame frame = new JFrame(gc);
         frame.setTitle("Minesweeper JS");
+        frame.setLocationRelativeTo(null);
         JLabel status = new JLabel();
         status.setText(String.format("Bombs: %d", board.bombPositions.size()));
         buttons = createButtons(frame);
