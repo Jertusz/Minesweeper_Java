@@ -13,8 +13,7 @@ import java.util.List;
  * @author JS
  */
 public class GUI {
-
-    static GraphicsConfiguration gc;
+    
     Board board;
     List<List<JButton>> buttons = new ArrayList<>();
 
@@ -163,7 +162,7 @@ public class GUI {
      * Responsible for handling all events and calling methods for changes / updates
      */
     public void showGui() {
-        JFrame frame = new JFrame(gc);
+        JFrame frame = new JFrame();
         frame.setTitle("Minesweeper JS");
         frame.setLocationRelativeTo(null);
         JLabel status = new JLabel();
