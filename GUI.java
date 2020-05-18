@@ -30,8 +30,9 @@ public class GUI {
             for (Field field : line) {
                 if (field.isDiscovered()) {
                     int[] fieldCoordinates = board.getFieldCoordinates(field);
-                    buttons.get(fieldCoordinates[0]).get(fieldCoordinates[1]).setText(String.valueOf(field.getValue()));
-                    setFontColor(buttons.get(fieldCoordinates[0]).get(fieldCoordinates[1]), field);
+                    JButton button = buttons.get(fieldCoordinates[0]).get(fieldCoordinates[1]);
+                    button.setText(String.valueOf(field.getValue()));
+                    setFontColor(button, field);
                 }
             }
         }
@@ -185,6 +186,8 @@ public class GUI {
             }
         });
         frame.setLayout(new GridLayout(board.getBoard().size() + 2, board.getBoard().size() - 1));
+
+        // Loop required to position buttons etc. in the last row, fills one row with empty JPanel
         for (int i = 0; i < board.getBoard().size(); i++) {
             frame.add(new JPanel());
         }
@@ -198,6 +201,8 @@ public class GUI {
                 frame.dispose();
             }
         });
+
+        // Loop for filling columns between bombs number and reset/close
         for (int i = 0; i < board.getBoard().size() - 3; i++) {
             frame.add(new JPanel());
         }
