@@ -13,7 +13,7 @@ import java.util.List;
  * @author JS
  */
 public class GUI {
-    
+
     Board board;
     List<List<JButton>> buttons = new ArrayList<>();
 
@@ -90,6 +90,17 @@ public class GUI {
             if (!result && !field.isMarkedBomb()) {
                 button.setText(String.valueOf(field.getValue()));
             } else if (field.getValue() == 9 && !field.isMarkedBomb()) {
+                button.setBackground(Color.RED);
+                Image img;
+                try {
+                    int width = button.getWidth();
+                    int height = button.getHeight();
+                    img = ImageIO.read(getClass().getResource("resources/bomb.png"));
+                    img = img.getScaledInstance(width, height, Image.SCALE_DEFAULT);
+                    button.setIcon(new ImageIcon(img));
+                } catch (IOException e) {
+                    button.setText("");
+                }
                 int option = JOptionPane.showConfirmDialog(frame, "Przegrana! \n Czy chcesz zagrać ponownie?", "", JOptionPane.YES_NO_OPTION);
                 if (option == JOptionPane.YES_OPTION) {
                     frame.dispose();
