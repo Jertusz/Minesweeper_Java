@@ -4,9 +4,9 @@
  * @author JS
  */
 public class Field {
-    int value;
-    boolean discovered;
-    boolean markedBomb = false;
+    private int value;
+    private boolean discovered;
+    private boolean markedBomb = false;
 
     public Field(int value, boolean discovered) {
         this.value = value;

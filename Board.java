@@ -9,8 +9,8 @@ import java.util.Random;
  * @author JS
  */
 public class Board {
-    List<List<Field>> board;
-    List<Integer[]> bombPositions = new ArrayList<>();
+    private List<List<Field>> board;
+    private List<Integer[]> bombPositions = new ArrayList<>();
 
     public Board(int size, int bombs) {
         this.board = new ArrayList<>();
@@ -58,7 +58,7 @@ public class Board {
      * @param y Position of field on y axis
      * @return Boolean true only if marking worked
      */
-    public boolean markBomb(int x, int y) {
+    protected boolean markBomb(int x, int y) {
 
         try {
             if(!board.get(x).get(y).isDiscovered() && !board.get(x).get(y).isMarkedBomb()) {
@@ -86,7 +86,7 @@ public class Board {
      * @param x Position of field on x axis
      * @param y Position of field on y axis
      */
-    public void unmarkBomb(int x, int y) {
+    protected void unmarkBomb(int x, int y) {
         try {
             if(board.get(x).get(y).isMarkedBomb()) {
                 board.get(x).get(y).setMarkedBomb(false);
@@ -133,7 +133,7 @@ public class Board {
      * @param y Position of the field on y axis
      * @return Boolean true only if the field contains bomb
      */
-    public boolean unveilField(int x, int y) {
+    protected boolean unveilField(int x, int y) {
         Field field;
         try {
             field = board.get(x).get(y);
@@ -169,6 +169,10 @@ public class Board {
         return false;
     }
 
+    public int getBombCount() {
+        return bombPositions.size();
+    }
+
     /**
      * Debug purpose only, allows to dynamically see what happens on the board after user clicks.
      * Can be deleted without breaking the program.
@@ -196,7 +200,7 @@ public class Board {
      * This method check if user discovered all fields and marked all bombs
      * @return Boolean true if all fields discovered, false if not
      */
-    public boolean winCondition() {
+    protected boolean winCondition() {
         int discovered = 0;
         int bombs = 0;
         for(List<Field> line: board) {

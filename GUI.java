@@ -1,8 +1,15 @@
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +21,8 @@ import java.util.List;
  */
 public class GUI {
 
-    Board board;
-    List<List<JButton>> buttons = new ArrayList<>();
+    private Board board;
+    private List<List<JButton>> buttons = new ArrayList<>();
 
     public GUI(Board board) {
         this.board = board;
@@ -24,7 +31,7 @@ public class GUI {
     /**
      * Method used to refresh visual properties for all fields on the boards
      */
-    public void changeButtons() {
+    private void changeButtons() {
         for (List<Field> line : board.getBoard()) {
             for (Field field : line) {
                 if (field.isDiscovered()) {
@@ -42,7 +49,7 @@ public class GUI {
      * @param button Button visually representing the field object
      * @param field Field object we are requesting the values from
      */
-    public void setFontColor(JButton button, Field field) {
+    private void setFontColor(JButton button, Field field) {
         switch (field.getValue()) {
             case 0:
                 button.setText("");
@@ -81,7 +88,7 @@ public class GUI {
      * @param button Button clicked
      * @param frame Frame containing the button
      */
-    public void mousePressed(MouseEvent arg0, Field field, JButton button, JFrame frame) {
+    private void mousePressed(MouseEvent arg0, Field field, JButton button, JFrame frame) {
         int[] fieldCoordinates = board.getFieldCoordinates(field);
         boolean result;
 
@@ -98,6 +105,7 @@ public class GUI {
                     img = ImageIO.read(getClass().getResource("resources/bomb.png"));
                     img = img.getScaledInstance(width, height, Image.SCALE_DEFAULT);
                     button.setIcon(new ImageIcon(img));
+                    playBombSound();
                 } catch (IOException e) {
                     button.setText("");
                 }
@@ -149,7 +157,7 @@ public class GUI {
      * @param frame Frame we want to reference in mouseListener
      * @return Grid of buttons
      */
-    public List<List<JButton>> createButtons (JFrame frame) {
+    private List<List<JButton>> createButtons (JFrame frame) {
         List<List<JButton>> buttonGrid = new ArrayList<>();
         for (List<Field> line : board.getBoard()) {
             List<JButton> temporary = new ArrayList<>();
@@ -167,17 +175,34 @@ public class GUI {
         }
         return buttonGrid;
     }
+    private void playBombSound() {
+        try
+        {
 
+
+            InputStream in = getClass().getResourceAsStream("resources/bomba.wav");
+            BufferedInputStream bin = new BufferedInputStream(in);
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(bin);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+            System.out.println(e.getMessage());
+        }
+    }
     /**
      * Method used for creating the program window.
      * Responsible for handling all events and calling methods for changes / updates
      */
-    public void showGui() {
+    private void showGui() {
         JFrame frame = new JFrame();
         frame.setTitle("Minesweeper JS");
         frame.setLocationRelativeTo(null);
         JLabel status = new JLabel();
-        status.setText(String.format("Bombs: %d", board.bombPositions.size()));
+        status.setText(String.format("Bombs: %d", board.getBombCount()));
         buttons = createButtons(frame);
         for (List<JButton> line : buttons) {
             for (JButton button : line) {
@@ -198,7 +223,8 @@ public class GUI {
         });
         frame.setLayout(new GridLayout(board.getBoard().size() + 2, board.getBoard().size() - 1));
 
-        // Loop required to position buttons etc. in the last row, fills one row with empty JPanel
+        // Loop required to position buttons etc. in the last row, fills one row with empty JPanel,
+        // could be changed by putting buttons in separate JPanel(), maybe later
         for (int i = 0; i < board.getBoard().size(); i++) {
             frame.add(new JPanel());
         }

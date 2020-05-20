@@ -1,6 +1,7 @@
 public class Main {
     public static void main(String[] args) {
-        // Main game loop only for testing purposes
+//        Console version
+//        Main game loop only for testing purposes
 //        Board gierka = new Board(10, 1);
 //        Scanner input = new Scanner(System.in);
 //        boolean lost = false;
